@@ -5,7 +5,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb'); // Import MongoCli
 const app = express();
 
 // MongoDB connection URI (replace with your actual connection string)
-const dbURI = "mongodb+srv://amarvaish2000:sKmysS8qz368UuVx@cluster0.wvezegn.mongodb.net/?retryWrites=true&w=majority";
+const dbURI = "mongodb+srv://amarvaish2000:sKmysS8qz368UuVx@cluster0.lx4dtwx.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(dbURI, {
