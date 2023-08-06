@@ -1,41 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content=
-			"width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-	<form action="/contact" method="post">
-		<input type="text" placeholder="Email" name="email">
-		<input type="text" placeholder="Query" name="query">
-		<button type="submit">Submit</button>
-	</form>
-</body>
-</html>
-const express = require("express");
-const ejs = require("ejs");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-
-mongoose.connect("mongodb://localhost:27017/newCollection", {
-useNewUrlParser: true,
-useUnifiedTopology: true
-});
-
-const contactSchema = {
-email: String,
-query: String,
-};
-
-const Contact = mongoose.model("Contact", contactSchema);
+const express = require('express');
+const mongoose = require('mongoose');
+const { MongoClient, ServerApiVersion } = require('mongodb'); // Import MongoClient
 
 const app = express();
 
-app.set("view engine", "ejs");
+// MongoDB connection URI (replace with your actual connection string)
+const dbURI = "mongodb+srv://amarvaish2000:sKmysS8qz368UuVx@cluster0.wvezegn.mongodb.net/?retryWrites=true&w=majority";
 
-app.use(bodyParser.urlencoded({
-	extended: true
-}));
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(dbURI, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server (optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+// Define a simple route to respond with "Hello, World!"
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
+console.log("hi");
+run().catch(console.dir);
+
+
+
+// Start the Express server
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
